@@ -1,4 +1,4 @@
-from topical.topics import Topic
+from topical.topic import Topic
 
 class TopicManager:
 
