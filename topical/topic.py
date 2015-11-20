@@ -13,7 +13,7 @@ class Topic:
 
         :param user: The user that wants to subscribe to the topic
         """
-        if not self.is_user_subscribed(user):
+        if not self.is_subscribed(user):
             self.subscribers.append(user)
 
     def unsubscribe(self, user):
@@ -49,7 +49,7 @@ class Topic:
                 return message.body
         return None
 
-    def is_user_subscribed(self, user):
+    def is_subscribed(self, user):
         """
         Check if a user is subscribed to this topic
 
