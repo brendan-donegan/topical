@@ -1,5 +1,6 @@
 from topical.message import Message
 
+
 class Topic:
 
     def __init__(self, title):
@@ -22,7 +23,6 @@ class Topic:
         :param user: The user that wants to unsubscribe
         """
         self.subscribers.remove(user)
-
 
     def add_message(self, body):
         """

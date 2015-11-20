@@ -1,5 +1,6 @@
 from topical.manager import TopicManager
 
+
 class TopicController:
 
     def __init__(self):
@@ -20,7 +21,7 @@ class TopicController:
     def unsubscribe_user_from_topic(self, user, topic_name):
         """
         Unsubscribe a user from a topic
-        
+
         :param user: The user to unsubscribe
         :param topic_name: The topic to unsubscribe the user from
         :return: True if the operation was succesful, otherwise False

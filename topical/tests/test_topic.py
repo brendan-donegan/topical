@@ -3,6 +3,7 @@ import unittest
 from topical.topic import Topic
 from topical.message import Message
 
+
 class TestTopic(unittest.TestCase):
 
     def setUp(self):

@@ -1,5 +1,6 @@
 from topical.topic import Topic
 
+
 class TopicManager:
 
     def __init__(self):

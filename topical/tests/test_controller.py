@@ -1,7 +1,7 @@
 import unittest
 
 from topical import controller, manager
-from topical.topic import Topic
+
 
 class TestTopicController(unittest.TestCase):
 
@@ -23,7 +23,7 @@ class TestTopicController(unittest.TestCase):
                 self.test_user,
                 self.test_topic_name,
             )
-        )   
+        )
         self.assertTrue(self.test_topic.is_subscribed(self.test_user))
 
     def test_unsubscribe_user_from_topic(self):
