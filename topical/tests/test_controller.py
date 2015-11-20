@@ -39,5 +39,6 @@ class TestTopicController(unittest.TestCase):
             self.topic_controller.next_message_in_topic_for_user(
                 self.test_user,
                 self.test_topic,
-            )
+            ),
+            self.test_message
         )

@@ -1,14 +1,11 @@
 class Message:
 
-    def __init__(self, body):
+    def __init__(self, body, watchers):
         self.body = body
-        self.watchers = []
-
-    def add_watcher(self, user):
-        pass
+        self.watchers = watchers
 
     def remove_watcher(self, user):
-        pass
+        self.watchers.remove(user)
 
-    def is_watching(self, user):
-        pass
+    def intended_for(self, user):
+        return user in self.watchers
