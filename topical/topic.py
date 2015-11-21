@@ -23,6 +23,11 @@ class Topic:
         :param user: The user that wants to unsubscribe
         """
         self.subscribers.remove(user)
+        for message in self.messages:
+            if message.intended_for(user):
+                message.remove_watcher(user)
+                if len(message.watchers) == 0:
+                    self.remove_message(message)
 
     def add_message(self, body):
         """
@@ -46,6 +51,8 @@ class Topic:
         for message in self.messages:
             if message.intended_for(user):
                 message.remove_watcher(user)
+                if len(message.watchers) == 0:
+                    self.remove_message(message)
                 return message.body
         return None
 

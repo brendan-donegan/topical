@@ -27,10 +27,7 @@ class TestTopicController(unittest.TestCase):
         self.assertTrue(self.test_topic.is_subscribed(self.test_user))
 
     def test_unsubscribe_user_from_topic(self):
-        test_topic = self.topic_controller.topic_manager.get_topic_by_name(
-            self.test_topic_name
-        )
-        test_topic.subscribe(self.test_user)
+        self.test_topic.subscribe(self.test_user)
         self.assertTrue(
             self.topic_controller.unsubscribe_user_from_topic(
                 self.test_user,
@@ -39,20 +36,26 @@ class TestTopicController(unittest.TestCase):
         )
         self.assertFalse(self.test_topic.is_subscribed(self.test_user))
 
-    def test_publish_message_to_topic(self):
-        self.assertTrue(
-            self.topic_controller.publish_message_to_topic(
-                self.test_topic_name,
-                self.test_message,
-            )
+    def test_unsubscribe_user_removes_message(self):
+        self.test_topic.subscribe(self.test_user)
+        self.test_topic.add_message(self.test_message)
+        self.topic_controller.unsubscribe_user_from_topic(
+            self.test_user,
+            self.test_topic_name,
         )
+        self.assertEqual(self.test_topic.messages, [])
+
+    def test_publish_message_to_topic(self):
+        self.topic_controller.publish_message_to_topic(
+            self.test_topic_name,
+            self.test_message,
+        )
+        topic_message_bodies = [msg.body for msg in self.test_topic.messages]
+        self.assertIn(self.test_message, topic_message_bodies)
 
     def test_next_message_in_topic_for_user(self):
-        test_topic = self.topic_controller.topic_manager.get_topic_by_name(
-            self.test_topic_name
-        )
-        test_topic.subscribe(self.test_user)
-        test_topic.add_message(self.test_message)
+        self.test_topic.subscribe(self.test_user)
+        self.test_topic.add_message(self.test_message)
         self.assertEqual(
             self.topic_controller.next_message_in_topic_for_user(
                 self.test_user,
@@ -60,3 +63,12 @@ class TestTopicController(unittest.TestCase):
             ),
             self.test_message
         )
+
+    def test_all_subscribers_receive_message_removed(self):
+        self.test_topic.subscribe(self.test_user)
+        self.test_topic.add_message(self.test_message)
+        self.topic_controller.next_message_in_topic_for_user(
+            self.test_user,
+            self.test_topic_name,
+        )
+        self.assertEqual(self.test_topic.messages, [])

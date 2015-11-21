@@ -47,7 +47,6 @@ class TopicController:
 
         :param topic_name: The topic to publish the message to
         :param message: The message to publish
-        :return: True if the operation was succesful, otherwise False
         """
         topic = self.topic_manager.get_topic_by_name(topic_name)
         topic.add_message(message)
