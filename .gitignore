@@ -1,3 +1,5 @@
 *.pyc
 .coverage
 cover/
+topical.egg-info
+ve3
