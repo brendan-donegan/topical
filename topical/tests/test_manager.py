@@ -2,6 +2,7 @@ import unittest
 
 from topical.manager import TopicManager
 
+
 class TopicManagerTestCase(unittest.TestCase):
 
     def setUp(self):

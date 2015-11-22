@@ -8,6 +8,7 @@ from urllib.parse import urlsplit
 
 TOPICAL_SERVER_URL = 'http://localhost:6550'
 
+
 def _wait_for_server(url, timeout=10):
     parts = urlsplit(url)
     sock = socket.socket()
@@ -21,8 +22,9 @@ def _wait_for_server(url, timeout=10):
             now = time.time()
         return True
 
+
 class TopicalTestCase(unittest.TestCase):
-    
+
     def setUp(self):
         super().setUp()
         self.server = Popen(['topical', '--port=6550'])
@@ -65,7 +67,7 @@ class TopicalTestCase(unittest.TestCase):
 
     def test_unsubscribe_from_topic_subscribed_to(self):
         """
-        Verify that unsubscribing from a topic the user is 
+        Verify that unsubscribing from a topic the user is
         subscribed to returns success
         """
         user = 'brendand'
@@ -77,7 +79,7 @@ class TopicalTestCase(unittest.TestCase):
         unsubscribe_response = requests.delete(
             '/'.join([TOPICAL_SERVER_URL, topic, user])
         )
-        self.assertTrue(subscribe_response.ok)
+        self.assertTrue(unsubscribe_response.ok)
 
     def test_unsubscribe_from_topic_not_subscribed_to(self):
         """

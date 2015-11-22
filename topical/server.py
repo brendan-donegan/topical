@@ -37,6 +37,7 @@ def unsubscribe(request):
         raise HTTPNotFound()
     return Response()
 
+
 def retrieve_message(request):
     """
     Handle request to retrieve next message in topic
@@ -48,6 +49,7 @@ def retrieve_message(request):
     if message is None:
         raise HTTPNoContent()
     return Response(message)
+
 
 def publish(request):
     """

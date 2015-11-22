@@ -5,6 +5,7 @@ class NotSubscribedError(Exception):
     def __init__(self, message):
         self.message = message
 
+
 class Topic:
 
     def __init__(self, title):
