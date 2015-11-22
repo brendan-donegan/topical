@@ -1,6 +1,6 @@
 import unittest
 
-from topical.topic import Topic
+from topical.topic import Topic, NotSubscribedError
 from topical.message import Message
 
 
@@ -40,3 +40,7 @@ class TestTopic(unittest.TestCase):
         self.assertEqual('lolcatz r fun', message1)
         message2 = self.topic.next_message('brendand')
         self.assertIsNone(message2)
+
+    def test_next_message_for_not_subscribed_user(self):
+        with self.assertRaises(NotSubscribedError):
+            self.topic.next_message('anon')
