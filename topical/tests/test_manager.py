@@ -11,4 +11,5 @@ class TopicManagerTestCase(unittest.TestCase):
         topics = ['lolcatz', 'coffee', 'beer']
         topic_manager = TopicManager(topics)
         topic_titles = [topic for topic in topic_manager.topics]
-        self.assertEqual(topics, topic_titles)
+        # Use assertCountEqual as the topics won't necessarily be in order
+        self.assertCountEqual(topics, topic_titles)
