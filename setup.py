@@ -8,5 +8,7 @@ setup(
     author_email='brendan.j.donegan@gmail.com',
     description=('A client and server allowing messages to published to topics '
                  'and read by subscribed users.'),
+    setup_requires=['coverage', 'nose>=1.0'],
+    install_requires=['pyramid', 'requests'],
     test_suite='topical.tests',
 )
