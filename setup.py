@@ -11,4 +11,9 @@ setup(
     setup_requires=['coverage', 'nose>=1.0'],
     install_requires=['pyramid', 'requests', 'PyYAML'],
     test_suite='topical.tests',
+    entry_points={
+        'console_scripts': [
+            'topical = topical.server:main'
+        ]
+    }
 )
