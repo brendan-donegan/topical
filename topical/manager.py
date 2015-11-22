@@ -3,8 +3,11 @@ from topical.topic import Topic
 
 class TopicManager:
 
-    def __init__(self):
+    def __init__(self, topics=None):
         self.topics = {}
+        if topics:
+            for topic in topics:
+                self.add_topic(topic)
 
     def add_topic(self, topic_name):
         """

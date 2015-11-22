@@ -45,6 +45,14 @@ class TestTopicController(unittest.TestCase):
         )
         self.assertEqual(self.test_topic.messages, [])
 
+    def test_unsubscribe_non_subscribed_user(self):
+        self.assertFalse(
+            self.topic_controller.unsubscribe_user_from_topic(
+                self.test_user,
+                self.test_topic_name
+            )
+        )
+
     def test_publish_message_to_topic(self):
         self.topic_controller.publish_message_to_topic(
             self.test_topic_name,

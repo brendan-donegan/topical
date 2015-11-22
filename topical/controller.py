@@ -3,8 +3,8 @@ from topical.manager import TopicManager
 
 class TopicController:
 
-    def __init__(self):
-        self.topic_manager = TopicManager()
+    def __init__(self, topics=None):
+        self.topic_manager = TopicManager(topics)
 
     def subscribe_user_to_topic(self, user, topic_name):
         """
@@ -27,8 +27,10 @@ class TopicController:
         :return: True if the operation was succesful, otherwise False
         """
         topic = self.topic_manager.get_topic_by_name(topic_name)
+        if not topic.is_subscribed(user):
+            return False
         topic.unsubscribe(user)
-        return not topic.is_subscribed(user)
+        return True
 
     def next_message_in_topic_for_user(self, user, topic_name):
         """

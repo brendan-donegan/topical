@@ -1,6 +1,10 @@
 from topical.message import Message
 
 
+class NotSubscribedError(Exception):
+    def __init__(self, message):
+        self.message = message
+
 class Topic:
 
     def __init__(self, title):
@@ -48,6 +52,13 @@ class Topic:
         :param user: The user that wants to get the message
         :return: The next message for that user or None if that user is not
         """
+        if not self.is_subscribed(user):
+            raise NotSubscribedError(
+                '{user} not subscribed to {topic}'.format(
+                    user=user,
+                    topic=self.title
+                )
+            )
         for message in self.messages:
             if message.intended_for(user):
                 message.remove_watcher(user)

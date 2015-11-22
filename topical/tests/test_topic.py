@@ -9,6 +9,7 @@ class TestTopic(unittest.TestCase):
     def setUp(self):
         super().setUp()
         self.topic = Topic('lolcatz')
+        self.topic.subscribers = ['brendand']
 
     def test_subscribe(self):
         user = 'brendand'
@@ -22,7 +23,6 @@ class TestTopic(unittest.TestCase):
         self.assertNotIn(user, self.topic.subscribers)
 
     def test_add_message(self):
-        self.topic.subscribers = ['brendand']
         self.topic.add_message('lolcatz r fun')
         self.assertEqual('lolcatz r fun', self.topic.messages[0].body)
         self.assertEqual(['brendand'], self.topic.messages[0].watchers)

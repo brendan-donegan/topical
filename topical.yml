@@ -1,0 +1,6 @@
+port: 6543
+topics:
+    - lolcatz
+    - star wars
+    - coffee
+    - craft beer
