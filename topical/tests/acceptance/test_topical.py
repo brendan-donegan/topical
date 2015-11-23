@@ -23,6 +23,13 @@ def _wait_for_server(url, timeout=10):
         return True
 
 
+def make_url(*args):
+    url = TOPICAL_SERVER_URL
+    for arg in args:
+        url += '/{}'.format(arg)
+    return url
+
+
 class TopicalTestCase(unittest.TestCase):
 
     def setUp(self):
@@ -38,9 +45,7 @@ class TopicalTestCase(unittest.TestCase):
         """
         Verify that subscribing to a topic returns succesfully.
         """
-        subscribe_response = requests.post(
-            '/'.join([TOPICAL_SERVER_URL, 'lolcatz', 'brendand'])
-        )
+        subscribe_response = requests.post(make_url('lolcatz', 'brendand'))
         self.assertTrue(subscribe_response.ok)
 
     def test_subscribe_publish_and_read(self):
@@ -51,18 +56,11 @@ class TopicalTestCase(unittest.TestCase):
         user = 'brendand'
         topic = 'lolcatz'
         message = 'lolcatz r fun'
-        subscribe_response = requests.post(
-            '/'.join([TOPICAL_SERVER_URL, topic, user])
-        )
+        subscribe_response = requests.post(make_url(topic, user))
         self.assertTrue(subscribe_response.ok)
-        publish_response = requests.post(
-            '/'.join([TOPICAL_SERVER_URL, topic]),
-            data=message
-        )
+        publish_response = requests.post(make_url(topic), data=message)
         self.assertTrue(publish_response.ok)
-        next_message_response = requests.get(
-            '/'.join([TOPICAL_SERVER_URL, topic, user])
-        )
+        next_message_response = requests.get(make_url(topic, user))
         self.assertEqual(next_message_response.text, message)
 
     def test_unsubscribe_from_topic_subscribed_to(self):
@@ -72,13 +70,9 @@ class TopicalTestCase(unittest.TestCase):
         """
         user = 'brendand'
         topic = 'lolcatz'
-        subscribe_response = requests.post(
-            '/'.join([TOPICAL_SERVER_URL, topic, user])
-        )
+        subscribe_response = requests.post(make_url(topic, user))
         self.assertTrue(subscribe_response.ok)
-        unsubscribe_response = requests.delete(
-            '/'.join([TOPICAL_SERVER_URL, topic, user])
-        )
+        unsubscribe_response = requests.delete(make_url(topic, user))
         self.assertTrue(unsubscribe_response.ok)
 
     def test_unsubscribe_from_topic_not_subscribed_to(self):
@@ -88,9 +82,7 @@ class TopicalTestCase(unittest.TestCase):
         """
         user = 'brendand'
         topic = 'star wars'
-        unsubscribe_response = requests.delete(
-            '/'.join([TOPICAL_SERVER_URL, topic, user])
-        )
+        unsubscribe_response = requests.delete(make_url(topic, user))
         self.assertEqual(unsubscribe_response.status_code, 404)
 
     def test_next_message_for_topic_not_subscribed_to(self):
@@ -100,7 +92,18 @@ class TopicalTestCase(unittest.TestCase):
         """
         user = 'brendand'
         topic = 'star wars'
-        next_message_response = requests.get(
-            '/'.join([TOPICAL_SERVER_URL, topic, user])
-        )
+        next_message_response = requests.get(make_url(topic, user))
         self.assertEqual(next_message_response.status_code, 404)
+
+    def test_next_message_none_available(self):
+        """
+        Verify that trying to get a message from a topic that the user
+        is subscribed to but no messages have been published to returns
+        a 204 error
+        """
+        user = 'brendand'
+        topic = 'lolcatz'
+        subscribe_response = requests.post(make_url(topic, user))
+        self.assertTrue(subscribe_response.ok)
+        next_message_response = requests.get(make_url(topic, user))
+        self.assertEqual(next_message_response.status_code, 204)
