@@ -9,6 +9,7 @@ from urllib.parse import urlsplit
 TOPICAL_SERVER_URL = 'http://localhost:6550'
 
 TEST_USER = 'brendand'
+TEST_USER2 = 'nadnerb'
 TEST_TOPIC = 'lolcatz'
 TEST_TOPIC_NOT_EXISTING = 'star trek'
 TEST_MESSAGE = 'lolcatz r fun'
@@ -130,3 +131,27 @@ class TopicalTestCase(unittest.TestCase):
         self.assertTrue(unsubscribe_response.ok)
         next_message_response = requests.get(make_url(TEST_TOPIC, TEST_USER))
         self.assertEqual(next_message_response.status_code, 404)
+
+    def test_next_message_multiple_users(self):
+        """
+        Verify that if two users are waiting for a message then both
+        recieve it.
+        """
+        subscribe_response = requests.post(make_url(TEST_TOPIC, TEST_USER))
+        self.assertTrue(subscribe_response.ok)
+        subscribe_response2 = requests.post(make_url(TEST_TOPIC, TEST_USER2))
+        self.assertTrue(subscribe_response2.ok)
+        publish_response = requests.post(
+            make_url(TEST_TOPIC), data=TEST_MESSAGE
+        )
+        self.assertTrue(publish_response.ok)
+        next_message_first_response = requests.get(
+            make_url(TEST_TOPIC, TEST_USER)
+        )
+        self.assertTrue(next_message_first_response.ok)
+        self.assertEqual(next_message_first_response.text, TEST_MESSAGE)
+        next_message_second_response = requests.get(
+            make_url(TEST_TOPIC, TEST_USER2)
+        )
+        self.assertTrue(next_message_second_response.ok)
+        self.assertEqual(next_message_second_response.text, TEST_MESSAGE)
