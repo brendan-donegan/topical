@@ -8,6 +8,11 @@ from urllib.parse import urlsplit
 
 TOPICAL_SERVER_URL = 'http://localhost:6550'
 
+TEST_USER = 'brendand'
+TEST_TOPIC = 'lolcatz'
+TEST_TOPIC_NOT_EXISTING = 'star trek'
+TEST_MESSAGE = 'lolcatz r fun'
+
 
 def _wait_for_server(url, timeout=10):
     parts = urlsplit(url)
@@ -45,7 +50,7 @@ class TopicalTestCase(unittest.TestCase):
         """
         Verify that subscribing to a topic returns succesfully.
         """
-        subscribe_response = requests.post(make_url('lolcatz', 'brendand'))
+        subscribe_response = requests.post(make_url(TEST_TOPIC, TEST_USER))
         self.assertTrue(subscribe_response.ok)
 
     def test_subscribe_to_topic_not_existing(self):
@@ -53,7 +58,9 @@ class TopicalTestCase(unittest.TestCase):
         Verify that subscribing to a topic that doesn't exist is
         succesful
         """
-        subscribe_response = requests.post(make_url('star trek', 'brendand'))
+        subscribe_response = requests.post(
+            make_url(TEST_TOPIC_NOT_EXISTING, TEST_USER)
+        )
         self.assertTrue(subscribe_response.ok)
 
     def test_subscribe_publish_and_read(self):
@@ -61,26 +68,21 @@ class TopicalTestCase(unittest.TestCase):
         Verify that requesting a message for a topic returns a message if the
         user is subscribed to that topic and a message has been posted to it
         """
-        user = 'brendand'
-        topic = 'lolcatz'
-        message = 'lolcatz r fun'
-        subscribe_response = requests.post(make_url(topic, user))
+        subscribe_response = requests.post(make_url(TEST_TOPIC, TEST_USER))
         self.assertTrue(subscribe_response.ok)
-        publish_response = requests.post(make_url(topic), data=message)
+        publish_response = requests.post(make_url(TEST_TOPIC), data=TEST_MESSAGE)
         self.assertTrue(publish_response.ok)
-        next_message_response = requests.get(make_url(topic, user))
-        self.assertEqual(next_message_response.text, message)
+        next_message_response = requests.get(make_url(TEST_TOPIC, TEST_USER))
+        self.assertEqual(next_message_response.text, TEST_MESSAGE)
 
     def test_unsubscribe_from_topic_subscribed_to(self):
         """
         Verify that unsubscribing from a topic the user is
         subscribed to returns success
         """
-        user = 'brendand'
-        topic = 'lolcatz'
-        subscribe_response = requests.post(make_url(topic, user))
+        subscribe_response = requests.post(make_url(TEST_TOPIC, TEST_USER))
         self.assertTrue(subscribe_response.ok)
-        unsubscribe_response = requests.delete(make_url(topic, user))
+        unsubscribe_response = requests.delete(make_url(TEST_TOPIC, TEST_USER))
         self.assertTrue(unsubscribe_response.ok)
 
     def test_unsubscribe_from_topic_not_subscribed_to(self):
@@ -88,9 +90,7 @@ class TopicalTestCase(unittest.TestCase):
         Verify that unsubscribing from a topic returns 404
         if the user is not already subscribed to that topic.
         """
-        user = 'brendand'
-        topic = 'star wars'
-        unsubscribe_response = requests.delete(make_url(topic, user))
+        unsubscribe_response = requests.delete(make_url(TEST_TOPIC, TEST_USER))
         self.assertEqual(unsubscribe_response.status_code, 404)
 
     def test_next_message_for_topic_not_subscribed_to(self):
@@ -98,9 +98,7 @@ class TopicalTestCase(unittest.TestCase):
         Verify that trying to get a message from a topic the user is not
         subscribed to returns a 404 error.
         """
-        user = 'brendand'
-        topic = 'star wars'
-        next_message_response = requests.get(make_url(topic, user))
+        next_message_response = requests.get(make_url(TEST_TOPIC, TEST_USER))
         self.assertEqual(next_message_response.status_code, 404)
 
     def test_next_message_none_available(self):
@@ -109,9 +107,9 @@ class TopicalTestCase(unittest.TestCase):
         is subscribed to but no messages have been published to returns
         a 204 error
         """
-        user = 'brendand'
-        topic = 'lolcatz'
-        subscribe_response = requests.post(make_url(topic, user))
+        subscribe_response = requests.post(make_url(TEST_TOPIC, TEST_USER))
         self.assertTrue(subscribe_response.ok)
-        next_message_response = requests.get(make_url(topic, user))
+        next_message_response = requests.get(make_url(TEST_TOPIC, TEST_USER))
         self.assertEqual(next_message_response.status_code, 204)
+
+    
