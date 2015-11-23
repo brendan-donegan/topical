@@ -115,7 +115,7 @@ class TopicalTestCase(unittest.TestCase):
         next_message_response = requests.get(make_url(TEST_TOPIC, TEST_USER))
         self.assertEqual(next_message_response.status_code, 204)
 
-    def test_unsubscribe_user_does_not_recieve_messages(self):
+    def test_unsubscribe_user_does_not_receive_messages(self):
         """
         Verify that unsubscribing a user from a topic means they don't get
         any more messages from that topic and a 404 is returned (as they
@@ -135,7 +135,7 @@ class TopicalTestCase(unittest.TestCase):
     def test_next_message_multiple_users(self):
         """
         Verify that if two users are waiting for a message then both
-        recieve it.
+        receive it.
         """
         subscribe_response = requests.post(make_url(TEST_TOPIC, TEST_USER))
         self.assertTrue(subscribe_response.ok)
