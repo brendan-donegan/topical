@@ -14,10 +14,10 @@ Setup
 To run Topical, you will need Python 3 and the virtualenv tool.
 To initialise the virtual environment and run topical:
 
-$ virtualenv --python=python3 venv
-$ . venv/bin/activate
-$ python3 setup.py develop
-$ topical
+    $ virtualenv --python=python3 venv
+    $ . venv/bin/activate
+    $ python3 setup.py develop
+    $ topical
 
 By default topical will run on port 8080, you can use the --port option
 to change it if you already have software running on port 8080.
@@ -30,6 +30,6 @@ Testing
 
 After activating the virtual environment, tests can be run with:
 
-$ python3 setup.py nosetests
+    $ python3 setup.py nosetests
 
 This will run unit and acceptance tests and generate coverage reports
