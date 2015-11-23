@@ -91,5 +91,16 @@ class TopicalTestCase(unittest.TestCase):
         unsubscribe_response = requests.delete(
             '/'.join([TOPICAL_SERVER_URL, topic, user])
         )
-        self.assertFalse(unsubscribe_response.ok)
         self.assertEqual(unsubscribe_response.status_code, 404)
+
+    def test_next_message_for_topic_not_subscribed_to(self):
+        """
+        Verify that trying to get a message from a topic the user is not
+        subscribed to returns a 404 error.
+        """
+        user = 'brendand'
+        topic = 'star wars'
+        next_message_response = requests.get(
+            '/'.join([TOPICAL_SERVER_URL, topic, user])
+        )
+        self.assertEqual(next_message_response.status_code, 404)

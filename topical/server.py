@@ -7,6 +7,7 @@ from pyramid.httpexceptions import HTTPNotFound, HTTPNoContent
 import yaml
 
 from topical.controller import TopicController
+from topical.topic import NotSubscribedError
 
 # TODO: Get this out of the module level
 with open('topical.yml', 'r') as stream:
@@ -42,10 +43,13 @@ def retrieve_message(request):
     """
     Handle request to retrieve next message in topic
     """
-    message = topic_controller.next_message_in_topic_for_user(
-        request.matchdict['user'],
-        request.matchdict['topic'],
-    )
+    try:
+        message = topic_controller.next_message_in_topic_for_user(
+            request.matchdict['user'],
+            request.matchdict['topic'],
+        )
+    except NotSubscribedError:
+        raise HTTPNotFound()
     if message is None:
         raise HTTPNoContent()
     return Response(message)
