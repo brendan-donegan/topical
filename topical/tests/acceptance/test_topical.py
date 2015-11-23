@@ -48,6 +48,14 @@ class TopicalTestCase(unittest.TestCase):
         subscribe_response = requests.post(make_url('lolcatz', 'brendand'))
         self.assertTrue(subscribe_response.ok)
 
+    def test_subscribe_to_topic_not_existing(self):
+        """
+        Verify that subscribing to a topic that doesn't exist is
+        succesful
+        """
+        subscribe_response = requests.post(make_url('star trek', 'brendand'))
+        self.assertTrue(subscribe_response.ok)
+
     def test_subscribe_publish_and_read(self):
         """
         Verify that requesting a message for a topic returns a message if the

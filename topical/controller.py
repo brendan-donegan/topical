@@ -14,6 +14,8 @@ class TopicController:
         :param topic_name: The topic to subscribe the user to
         :return: True if the operation was succesful, otherwise False
         """
+        if not self.topic_manager.has_topic(topic_name):
+            self.topic_manager.add_topic(topic_name)
         topic = self.topic_manager.get_topic_by_name(topic_name)
         topic.subscribe(user)
         return topic.is_subscribed(user)

@@ -26,3 +26,12 @@ class TopicManager:
         :return: The Topic object or None if it does not exist
         """
         return self.topics.get(topic_name)
+
+    def has_topic(self, topic_name):
+        """
+        Check if the topic with a given name exists
+
+        :param topic_name: The name of the topic
+        :return: True if the topic exists otherwise False
+        """
+        return topic_name in self.topics

@@ -26,6 +26,18 @@ class TestTopicController(unittest.TestCase):
         )
         self.assertTrue(self.test_topic.is_subscribed(self.test_user))
 
+    def test_subscribe_user_to_topic_not_existing(self):
+        self.assertTrue(
+            self.topic_controller.subscribe_user_to_topic(
+                self.test_user,
+                'star trek',
+            )
+        )
+        new_topic = self.topic_controller.topic_manager.get_topic_by_name(
+            'star trek'
+        )
+        self.assertTrue(new_topic.is_subscribed(self.test_user))
+
     def test_unsubscribe_user_from_topic(self):
         self.test_topic.subscribe(self.test_user)
         self.assertTrue(
