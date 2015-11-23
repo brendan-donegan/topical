@@ -24,3 +24,12 @@ to change it if you already have software running on port 8080.
 
 Disclaimer - this works on Ubuntu 15.10 but should also work on any other
 environment with python3 and virtualenv available
+
+Testing
+=======
+
+After activating the virtual environment, tests can be run with:
+
+$ python3 setup.py nosetests
+
+This will run unit and acceptance tests and generate coverage reports
