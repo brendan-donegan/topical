@@ -8,12 +8,14 @@ class TopicController:
 
     def subscribe_user_to_topic(self, user, topic_name):
         """
-        Subscribe a user to a topic
+        Subscribe a user to a topic, creating it if it
+        doesn't exist already.
 
         :param user: The user to subscribe
         :param topic_name: The topic to subscribe the user to
         :return: True if the operation was succesful, otherwise False
         """
+        # Create the topic if it doesn't already exist
         if not self.topic_manager.has_topic(topic_name):
             self.topic_manager.add_topic(topic_name)
         topic = self.topic_manager.get_topic_by_name(topic_name)
@@ -22,7 +24,7 @@ class TopicController:
 
     def unsubscribe_user_from_topic(self, user, topic_name):
         """
-        Unsubscribe a user from a topic
+        Unsubscribe a user from a topic.
 
         :param user: The user to unsubscribe
         :param topic_name: The topic to unsubscribe the user from
@@ -48,7 +50,6 @@ class TopicController:
     def publish_message_to_topic(self, topic_name, message):
         """
         Publish a message with the specified text to a specified topic
-
         :param topic_name: The topic to publish the message to
         :param message: The message to publish
         """
